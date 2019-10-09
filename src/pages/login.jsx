@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import AppIcon from '../images/icon.png'
 import axios from 'axios'
-
+import { Link } from 'react-router-dom'
 // MUI
 import withStyles from '@material-ui/core/styles/withStyles'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const styles = {
     form: {
@@ -23,14 +24,22 @@ const styles = {
         marginBottom: '10px'
     },
     button: {
-        marginTop: '20px' 
+        marginTop: '20px',
+        position: 'relative'
     },
     pageTitle: {
         marginBottom: '5px'
     },
     customError: {
         color: 'red',
-        fontSize: '0.8rem'
+        fontSize: '0.8rem',
+        marginTop: 10
+    },
+    progress: {
+        position: 'absolute'
+    },
+    signUpLink: {
+        color: '#ff5722'
     }
 }
 
@@ -101,7 +110,8 @@ export class login extends Component {
                         label="Email" 
                         className={classes.textField}
                         helperText={errors.email} 
-                        error={errors.email ? true : false} 
+                        error={errors.email ? true : false}
+                        disabled={loading ? true : false} 
                         value={this.state.email} 
                         onChange={this.handleChange} 
                         fullWidth />
@@ -113,7 +123,8 @@ export class login extends Component {
                         label="Password" 
                         className={classes.textField}
                         helperText={errors.password} 
-                        error={errors.email ? true : false} 
+                        error={errors.email ? true : false}
+                        disabled={loading ? true : false}  
                         value={this.state.password} 
                         onChange={this.handleChange} 
                         fullWidth />
@@ -124,7 +135,12 @@ export class login extends Component {
                             </Typography>
                         )}
 
-                        <Button type="submit" variant="contained" color="primary" className={classes.button}>Log In</Button>
+                        <Button type="submit" variant="contained" color="primary" className={classes.button} disabled={loading ? true : false}>
+                            Log In
+                            {loading && (<CircularProgress size={30} className={classes.progress}/>)} 
+                        </Button>
+                        <br/>
+                        <small>Dont have an account? <Link to="/signup" className={classes.signUpLink}>Sign Up</Link></small>
                     </form>
                 </Grid>
                 <Grid item sm />
