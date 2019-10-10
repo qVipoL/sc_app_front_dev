@@ -21,14 +21,13 @@ export class home extends Component {
             this.setState({
                 posts: res.data
             })
-            console.log(this.state)
         })
         .catch(err => console.log(err))
     }
     render() {
         let recentPostsMarkup = this.state.posts
          ? (this.state.posts.map(post => <Post key={post.createdAt} post={post} />))
-         : (<CircularProgress thickness='20' />)
+         : (<CircularProgress thickness={20} />)
         return (
             <Grid container spacing={10}>
                 <Grid item sm={8} sx={12}>

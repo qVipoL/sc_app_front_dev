@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import AppIcon from '../images/icon.png'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+
+import themeObj from '../util/theme'
 // MUI
 import withStyles from '@material-ui/core/styles/withStyles'
 import TextField from '@material-ui/core/TextField'
@@ -11,37 +13,8 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-const styles = {
-  form: {
-    textAlign: 'center'
-  },
-  formIcon: {
-      maxWidth: '25%',
-      opacity: 0.3,
-      marginTop: '10px' 
-  },
-  textField: {
-      marginBottom: '10px'
-  },
-  button: {
-      marginTop: '20px',
-      position: 'relative'
-  },
-  pageTitle: {
-      marginBottom: '5px'
-  },
-  customError: {
-      color: 'red',
-      fontSize: '0.8rem',
-      marginTop: 10
-  },
-  progress: {
-      position: 'absolute'
-  },
-  signUpLink: {
-      color: '#ff5722'
-  }
-}
+
+const styles = () => ({...themeObj})
 
 export class login extends Component {
     constructor(props){
@@ -72,7 +45,6 @@ export class login extends Component {
 
         axios.post('/login', userData)
         .then(res => {
-            console.log(res.data)
             localStorage.setItem('FBIdToken', `Bearer ${res.data.token}`)
             this.setState({loading: false})
             this.props.history.push('/')
