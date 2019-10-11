@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import AppIcon from '../images/icon.png'
-import axios from 'axios'
 import { Link } from 'react-router-dom'
 
 import themeObj from '../util/theme'
@@ -12,6 +11,9 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
+// Redux
+import { connect } from 'react-redux'
+import { signUpUser } from '../redux/actions/userActions'
 
 const styles = () => ({...themeObj})
 
@@ -24,7 +26,6 @@ export class signup extends Component {
             password: '',
             confirmPassword: '',
             handle: '',
-            loading: false,
             errors: {}
         }
 
@@ -32,32 +33,23 @@ export class signup extends Component {
         this.handleChange = this.handleChange.bind(this)
     }
 
+    componentWillReceiveProps(nextProps){
+        if(nextProps.UI.errors){
+            this.setState({
+                errors: nextProps.UI.errors
+            })
+        }
+    }
+
     handleSubmit(event){
         event.preventDefault()
-
-        this.setState({
-            loading: true
-        })
-
         const newUserData = {
             email: this.state.email,
             password: this.state.password,
             confirmPassword: this.state.confirmPassword,
             handle: this.state.handle
         }
-
-        axios.post('/signup', newUserData)
-        .then(res => {
-            localStorage.setItem('FBIdToken', `Bearer ${res.data.token}`)
-            this.setState({loading: false})
-            this.props.history.push('/')
-        })
-        .catch(err => {
-            this.setState({
-                errors: err.response.data,
-                loading: false
-            })
-        })
+        this.props.signUpUser(newUserData, this.props.history)
     }
 
     handleChange(event){
@@ -67,8 +59,8 @@ export class signup extends Component {
     }
 
     render() {
-        const { classes } = this.props
-        const { errors, loading } = this.state
+        const { classes, UI: { loading } } = this.props
+        const { errors } = this.state
 
         return (
             <Grid container className={classes.form}>
@@ -152,8 +144,20 @@ export class signup extends Component {
 }
 
 signup.propTypes = {
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    signUpUser: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
+    UI: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(signup)
+const mapStateToProps = (state) => ({
+    user: state.user,
+    UI: state.UI
+})
+
+const mapActionsToProps = {
+    signUpUser
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(signup))
 
