@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
-import Post from '../components/Post';
 import axios from 'axios'
-import Grid from '@material-ui/core/Grid'
+
+// Components
+import Post from '../components/Post'
+import Profile from '../components/Profile'
 
 //MUI
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Grid from '@material-ui/core/Grid'
 
 
 export class home extends Component {
@@ -34,7 +37,7 @@ export class home extends Component {
                     <h1>{recentPostsMarkup}</h1>
                 </Grid>
                 <Grid item sm={4} sx={12}>
-                    <p>Profile</p>
+                    <Profile />
                 </Grid>
             </Grid>
         )
