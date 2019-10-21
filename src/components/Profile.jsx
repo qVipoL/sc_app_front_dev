@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import dayjs from 'dayjs'
 import { uploadImage, logOutUser } from '../redux/actions/userActions'
+import EditDetails from './EditDetails'
 
 // Redux
 import { connect } from 'react-redux'
@@ -13,8 +14,7 @@ import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import MuiLink from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
-import IconButton from '@material-ui/core/IconButton'
-import Tooltip from '@material-ui/core/Tooltip'
+import MyButton from '../util/MyButton'
 
 // Icons
 import LocationOn from '@material-ui/icons/LocationOn'
@@ -108,17 +108,10 @@ class Profile extends Component {
                     <div className="image-wrapper">
                         <img src={imageUrl} alt="profile-pic" className="profile-image"/>
                         <input type="file" id="imageInput" onChange={this.handleImageChange} hidden="hidden"/>
-                        <Tooltip title="Edit Profile Picture" placement="top-start">
-                          <IconButton onClick={this.handleEditPicture} className={classes.buttons}>
+                        <MyButton tip="Edit Profile Picture" onClick={this.handleEditPicture} btnClassName={classes.buttons}>
                             <EditIcon color="primary"/>
-                          </IconButton>
-                        </Tooltip>
+                        </MyButton>
                     </div>
-                    <Tooltip title="Log Out" placement="top-start">
-                          <IconButton onClick={this.handleLogOut} className={classes.buttons}>
-                              <ExitToApp color="primary"/>
-                          </IconButton>
-                    </Tooltip>
                     <hr/>
                     <div className="profile-details">
                         <MuiLink component={Link} to={`/users/${handle}`} color="primary" variant="h5">
@@ -147,6 +140,10 @@ class Profile extends Component {
                         {' '}
                         <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
                     </div>
+                    <MyButton tip="Log Out" onClick={this.handleLogOut} btnClassName={classes.buttons}>
+                        <ExitToApp color="primary"/>
+                    </MyButton>
+                    <EditDetails />
                 </div>
             </Paper>
         ) : (
@@ -169,7 +166,9 @@ class Profile extends Component {
 
 Profile.propTypes = {
     user: PropTypes.object.isRequired,
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    logOutUser: PropTypes.func.isRequired,
+    uploadImage: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
