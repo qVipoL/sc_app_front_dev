@@ -75,7 +75,7 @@ export class EditDetails extends Component {
                 <MyButton tip="Edit Details" onClick={this.handleOpen} btnClassName={classes.button}>
                     <EditIcon color="primary" />
                 </MyButton>
-                <Dialog open={this.state.open} onClose={this.handleClose}fullWidthmaxWidth="sm">
+                <Dialog open={this.state.open} onClose={this.handleClose} fullWidthmaxWidth="sm">
                     <DialogTitle>Edit Details</DialogTitle>
                     <DialogContent>
                         <form>

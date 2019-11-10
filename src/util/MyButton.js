@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton'
 const MyButton = (props) => {
     const { children, onClick, tip, btnClassName, tipClassName } = props
     return (
-        <Tooltip title={tip} className={tipClassName}>
+        <Tooltip title={tip} className={tipClassName} placement="top">
             <IconButton onClick={onClick} className={btnClassName}>
                 {children}
             </IconButton>

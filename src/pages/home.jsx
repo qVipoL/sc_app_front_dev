@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import axios from 'axios'
+import PropTypes from 'prop-types'
 
 // Components
 import Post from '../components/Post'
@@ -9,27 +9,19 @@ import Profile from '../components/Profile'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Grid from '@material-ui/core/Grid'
 
+//Redux
+import { connect } from 'react-redux'
+import { getPosts } from '../redux/actions/dataActions'
+
 
 export class home extends Component {
-    constructor(props){
-        super(props);
-
-        this.state = {
-            posts: null
-        }
-    }
     componentDidMount(){
-        axios.get('/posts')
-        .then(res => {
-            this.setState({
-                posts: res.data
-            })
-        })
-        .catch(err => console.log(err))
+        this.props.getPosts()
     }
     render() {
-        let recentPostsMarkup = this.state.posts
-         ? (this.state.posts.map(post => <Post key={post.createdAt} post={post} />))
+        const { posts, loading } = this.props.data
+        let recentPostsMarkup = !loading
+         ? (posts.map(post => <Post key={post.createdAt} post={post} />))
          : (<CircularProgress thickness={20} />)
         return (
             <Grid container spacing={10}>
@@ -44,4 +36,17 @@ export class home extends Component {
     }
 }
 
-export default home
+home.propTypes = {
+    getPosts: PropTypes.func.isRequired,
+    data: PropTypes.object.isRequired
+}
+
+const mapStateToProps = (state) => ({
+    data: state.data
+})
+
+const mapActionsToProps = {
+    getPosts
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(home)
