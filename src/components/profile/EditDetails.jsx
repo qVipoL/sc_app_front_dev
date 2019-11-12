@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { editUserDetails } from '../redux/actions/userActions'
-import themeObj from '../util/theme'
+import { editUserDetails } from '../../redux/actions/userActions'
+import themeObj from '../../util/theme'
 // Redux
 import { connect } from 'react-redux'
 
@@ -13,7 +13,7 @@ import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
-import MyButton from '../util/MyButton'
+import MyButton from '../../util/MyButton'
 // Icons
 import EditIcon from '@material-ui/icons/Edit'
 

@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 // Components
-import Post from '../components/Post'
-import Profile from '../components/Profile'
+import Post from '../components/post/Post'
+import Profile from '../components/profile/Profile'
 
 //MUI
 import CircularProgress from '@material-ui/core/CircularProgress'
