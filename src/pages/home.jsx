@@ -14,7 +14,7 @@ import { connect } from 'react-redux'
 import { getPosts } from '../redux/actions/dataActions'
 
 
-export class home extends Component {
+class home extends Component {
     componentDidMount(){
         this.props.getPosts()
     }
@@ -26,7 +26,7 @@ export class home extends Component {
         return (
             <Grid container spacing={10}>
                 <Grid item sm={8} sx={12}>
-                    <h1>{recentPostsMarkup}</h1>
+                    {recentPostsMarkup}
                 </Grid>
                 <Grid item sm={4} sx={12}>
                     <Profile />

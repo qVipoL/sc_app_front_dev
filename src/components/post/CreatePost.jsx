@@ -36,7 +36,7 @@ const styles = {
     }
 }
 
-export class CreatePost extends Component {
+class CreatePost extends Component {
     state = {
         open: false,
         body: '',

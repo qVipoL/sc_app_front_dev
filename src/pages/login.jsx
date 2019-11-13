@@ -17,7 +17,7 @@ import { loginUser } from '../redux/actions/userActions'
 
 const styles = () => ({...themeObj})
 
-export class login extends Component {
+class login extends Component {
     constructor(props){
         super(props)
         

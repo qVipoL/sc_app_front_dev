@@ -10,8 +10,6 @@ import LikeButton from './LikeButton'
 // MUI
 import withStyles from '@material-ui/core/styles/withStyles'
 import Card from '@material-ui/core/Card'
-import CardActionArea from '@material-ui/core/CardActionArea'
-import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import Typography from '@material-ui/core/Typography'
@@ -39,7 +37,7 @@ const styles = {
     }
 }
 
-export class Post extends Component {
+class Post extends Component {
     render() {
         dayjs.extend(relativeTime)
         const { classes, post: { body, createdAt, userImage, userHandle, postId, likeCount, commentCount }, user: { authenticated, credentials: { handle } } } = this.props
@@ -60,7 +58,7 @@ export class Post extends Component {
                         <ChatIcon color="primary" />
                     </MyButton>
                     <span className={classes.smallSpan}>{commentCount} Comments</span>
-                    <PostDialog postId={postId} userHandle={userHandle} />
+                    <PostDialog postId={postId} userHandle={userHandle} openDialog={this.props.openDialog} />
                 </CardContent>
             </Card>
         )
@@ -70,7 +68,8 @@ export class Post extends Component {
 Post.propsTypes = {
     user: PropTypes.object.isRequired,
     post: PropTypes.object.isRequired,
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    openDialog: PropTypes.bool
 }
 
 const mapStateToProps = (state) => ({

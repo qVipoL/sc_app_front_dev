@@ -17,7 +17,7 @@ import { deletePost } from '../../redux/actions/dataActions'
 const styles = {
 }
 
-export class DeletePost extends Component {
+class DeletePost extends Component {
     state = {
         open: false
     }

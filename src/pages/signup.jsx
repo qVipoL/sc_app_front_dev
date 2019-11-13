@@ -17,7 +17,7 @@ import { signUpUser } from '../redux/actions/userActions'
 
 const styles = () => ({...themeObj})
 
-export class signup extends Component {
+class signup extends Component {
     constructor(props){
         super(props)
         

@@ -4,15 +4,14 @@ import MyButton from '../../util/MyButton'
 import dayjs from 'dayjs'
 import { Link } from 'react-router-dom'
 import LikeButton from './LikeButton'
+import Comments from './Comments'
+import CommentForm from './CommentForm'
 // Redux
 import { connect } from 'react-redux'
-import { getPost } from '../../redux/actions/dataActions'
+import { getPost, clearErrors } from '../../redux/actions/dataActions'
 
 //material ui
-import TextField from '@material-ui/core/TextField'
 import Dialog from '@material-ui/core/Dialog'
-import Button from '@material-ui/core/Button'
-import DialogTitle from '@material-ui/core/DialogTitle'
 import DialogContent from '@material-ui/core/DialogContent'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import withStyles from '@material-ui/core/styles/withStyles'
@@ -38,7 +37,7 @@ const styles = {
     profileImage: {
         maxWidth: 200,
         height: 200,
-        borderRadius: '20%',
+        borderRadius: '50%',
         objectFit: 'cover'
     },
     dialogContent: {
@@ -51,25 +50,48 @@ const styles = {
     },
     smallSpan: {
         fontSize: '20px'
+    },
+    visibleSep: {
+        width: '100%',
+        borderBottom: '1px solid rgba(0,0,0,0.1)',
+        marginBottom: 20
     }
 }
 
 class PostDialog extends Component{
     state = {
-        open: false
+        open: false,
+        oldPath: '',
+        newPath: ''
+    }
+
+    componentDidMount(){
+        if(this.props.openDialog){
+            this.handleOpen()
+        }
     }
 
     handleOpen = () => {
-        this.setState({ open: true })
+        let oldPath = window.location.pathname
+        
+        const { userHandle, postId } = this.props
+        const newPath = `/users/${userHandle}/post/${postId}`
+
+        if(oldPath === newPath) oldPath = `/users/${userHandle}`
+
+        window.history.pushState(null, null, newPath)
+        this.setState({ open: true, oldPath, newPath })
         this.props.getPost(this.props.postId)
     }
 
     handleClose = () => {
+        window.history.pushState(null, null, this.state.oldPath)
         this.setState({ open: false })
+        this.props.clearErrors()
     }
 
     render(){
-        const { classes, post: { postId, body, createdAt, likeCount, commentCount, userImage, userHandle }, UI: {loading}} = this.props
+        const { classes, post: { postId, body, createdAt, likeCount, commentCount, userImage, userHandle, comments }, UI: {loading}} = this.props
         const dialogMarkup = loading ? (
             <div className={classes.spinnerDiv}>
                 <CircularProgress size={200} thickness={2} />
@@ -102,6 +124,9 @@ class PostDialog extends Component{
                     </MyButton>
                     <span className={classes.smallSpan}>{commentCount} Comments</span>
                 </Grid>
+                <hr className={classes.visibleSep}/>
+                <CommentForm postId={postId} />
+                <Comments comments={comments} />
             </Grid>
         )
         return (
@@ -126,8 +151,10 @@ PostDialog.propTypes = {
     getPost: PropTypes.func.isRequired,
     postId: PropTypes.string.isRequired,
     userHandle: PropTypes.string.isRequired,
+    clearErrors: PropTypes.func.isRequired,
     post: PropTypes.object.isRequired,
-    UI: PropTypes.object.isRequired
+    UI: PropTypes.object.isRequired,
+    openDialog: PropTypes.bool
 }
 
 const mapStateToProps = (state) => ({
@@ -136,7 +163,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionsToProps = {
-    getPost
+    getPost,
+    clearErrors
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(PostDialog))
