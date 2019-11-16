@@ -20,6 +20,8 @@ import user from './pages/user'
 import Navbar from './components/layout/Navbar'
 import AuthRoute from './util/AuthRoute'
 
+axios.defaults.baseURL = "https://europe-west1-social-app-cffe5.cloudfunctions.net/api"
+
 const theme = createMuiTheme(themeObj)
 
 const token = localStorage.FBIdToken
