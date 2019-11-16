@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-
 // MUI
 import withStyles from '@material-ui/core/styles/withStyles'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid'
-
 // Redux
 import { connect } from 'react-redux'
 import { submitComment } from '../../redux/actions/dataActions'
@@ -58,7 +56,7 @@ class CommentForm extends Component {
 
     render() {
         const { classes, authenticated} = this.props
-        const { errors } = this.state
+        const { errors, body } = this.state
         const commentFormMarkup = authenticated ? (
             <Grid item sm={12} style={{textAlign:'center'}}>
                 <form onSubmit={this.handleSubmit}>
@@ -77,6 +75,7 @@ class CommentForm extends Component {
                     type="submit" 
                     variant="contained" 
                     color="primary"
+                    disabled={body.length < 1 ? true : false}
                     className={classes.button}>
                         Submit
                     </Button>

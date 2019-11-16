@@ -14,8 +14,12 @@ import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
 import { connect } from 'react-redux'
 import { deletePost } from '../../redux/actions/dataActions'
 
-const styles = {
-}
+const styles = (theme) => ({
+    dialogActions: {
+        display: 'flex',
+        justifyContent: 'space-around'
+    }
+})
 
 class DeletePost extends Component {
     state = {
@@ -36,12 +40,12 @@ class DeletePost extends Component {
         return (
             <React.Fragment>
                 <MyButton tip="Delete Post" onClick={this.handleOpen} btnClassName={classes.deleteButton}>
-                    <DeleteOutlineIcon color="secondary" />
+                    <DeleteOutlineIcon color="primary" />
                 </MyButton>
-                <Dialog open={this.state.open} onClose={this.handleClose} fullWidth maxWidth="sm">
-                    <DialogTitle>Are U Sure M8?</DialogTitle>
+                <Dialog open={this.state.open} onClose={this.handleClose} fullWidth maxWidth="sm" className={classes.dialogActions}>
+                    <DialogTitle>Are You Sure ?</DialogTitle>
                     <DialogActions>
-                        <Button onClick={this.deletePost} color="secondary">
+                        <Button onClick={this.deletePost} color="primary">
                             Delete
                         </Button>
                         <Button onClick={this.handleClose} color="primary">

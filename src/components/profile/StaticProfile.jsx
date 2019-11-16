@@ -7,7 +7,6 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import MuiLink from '@material-ui/core/Link'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
-
 //Icons
 import LocationOn from '@material-ui/icons/LocationOn'
 import LinkIcon from '@material-ui/icons/Link'
@@ -15,7 +14,9 @@ import CalendarToday from '@material-ui/icons/CalendarToday'
 
 const styles = theme => ({
     paper: {
-        padding: 20
+        padding: 20,
+        backgroundColor: '#9e9e9e',
+        boxShadow: '1px 1px 3px #424242'
       },
       profile: {
         '& .image-wrapper': {

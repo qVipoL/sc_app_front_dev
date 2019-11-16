@@ -16,7 +16,7 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import withStyles from '@material-ui/core/styles/withStyles'
 
 //icons
-import AddIcon from '@material-ui/icons/Add'
+import AddIcon from '@material-ui/icons/Backup'
 import CloseIcon from '@material-ui/icons/Close'
 
 const styles = {
@@ -93,11 +93,11 @@ class CreatePost extends Component {
                             <TextField
                                 name="body"
                                 type="text"
-                                label="Post!"
+                                label="Write You Post Here"
                                 fullWidth
                                 multiline
                                 rows="3"
-                                placeholder="POST ME"
+                                placeholder="POSTME"
                                 error={ errors.error ? true : false }
                                 helperText={errors.error}
                                 className={classes.textField}
@@ -108,7 +108,7 @@ class CreatePost extends Component {
                                 variant="contained" 
                                 color="primary" 
                                 className={classes.submitButton} 
-                                disabled={loading}>
+                                disabled={loading || this.state.body.length < 1}>
                                     Submit
                                     { loading && (
                                         <CircularProgress size={30} className={classes.progressSpinner} />

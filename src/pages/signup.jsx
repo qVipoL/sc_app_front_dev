@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import AppIcon from '../images/icon.png'
 import { Link } from 'react-router-dom'
-
-import themeObj from '../util/theme'
+import { isRegisterFormValid } from '../util/formValidation'
 // MUI
 import withStyles from '@material-ui/core/styles/withStyles'
 import TextField from '@material-ui/core/TextField'
@@ -11,11 +9,14 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import Avatar from '@material-ui/core/Avatar'
+// Icons
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 // Redux
 import { connect } from 'react-redux'
 import { signUpUser } from '../redux/actions/userActions'
 
-const styles = () => ({...themeObj})
+const styles = (theme) => ({...theme.spreadIt})
 
 class signup extends Component {
     constructor(props){
@@ -49,7 +50,13 @@ class signup extends Component {
             confirmPassword: this.state.confirmPassword,
             handle: this.state.handle
         }
-        this.props.signUpUser(newUserData, this.props.history)
+        const errors = isRegisterFormValid(newUserData)
+        if(Object.entries(errors).length !== 0){
+            this.setState({errors})
+        }
+        else{
+            this.props.signUpUser(newUserData, this.props.history)
+        }
     }
 
     handleChange(event){
@@ -66,7 +73,9 @@ class signup extends Component {
             <Grid container className={classes.form}>
                 <Grid item sm />
                 <Grid item sm>
-                    <img src={AppIcon} alt="icon" className={classes.formIcon}/>
+                    <Avatar className={classes.avatar}>
+                        <LockOutlinedIcon />
+                    </Avatar>
                     <Typography variant="h4" className={classes.pageTitle}>
                         <p>Sign Up</p>
                     </Typography>

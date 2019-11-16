@@ -2,30 +2,30 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import dayjs from 'dayjs'
-import { uploadImage, logOutUser } from '../../redux/actions/userActions'
+// Components
+import MyButton from '../../util/MyButton'
 import EditDetails from './EditDetails'
-
+import ProfileSkeleton from '../../util/ProfileSkeleton'
 // Redux
 import { connect } from 'react-redux'
-
+import { uploadImage, logOutUser } from '../../redux/actions/userActions'
 // MUI
 import withStyles from '@material-ui/core/styles/withStyles'
-import Button from '@material-ui/core/Button'
 import Paper from '@material-ui/core/Paper'
 import MuiLink from '@material-ui/core/Link'
 import Typography from '@material-ui/core/Typography'
-import MyButton from '../../util/MyButton'
-
 // Icons
-import LocationOn from '@material-ui/icons/LocationOn'
+import AccountIcon from '@material-ui/icons/AccountCircle'
 import LinkIcon from '@material-ui/icons/Link'
-import CalendarToday from '@material-ui/icons/CalendarToday'
-import EditIcon from '@material-ui/icons/Edit'
+import CalendarIcon from '@material-ui/icons/EventAvailable'
+import EditPhotoIcon from '@material-ui/icons/InsertPhoto'
 import ExitToApp from '@material-ui/icons/ExitToApp'
 
 const styles = (theme) => ({
     paper: {
-      padding: 20
+      padding: 10,
+      backgroundColor: '#9e9e9e',
+      boxShadow: '1px 1px 3px #424242'
     },
     profile: {
       '& .image-wrapper': {
@@ -38,8 +38,8 @@ const styles = (theme) => ({
         }
       },
       '& .profile-image': {
-        width: 200,
-        height: 200,
+        width: 150,
+        height: 150,
         objectFit: 'cover',
         maxWidth: '100%',
         borderRadius: '50%'
@@ -68,6 +68,14 @@ const styles = (theme) => ({
       '& a': {
         margin: '20px 10px'
       }
+    },
+    button: {
+      marginTop: '20px',
+      position: 'relative'
+    },
+    buttomBtns: {
+      display:'flex',
+      justifyContent:'space-between'
     }
   })
 
@@ -99,7 +107,7 @@ class Profile extends Component {
     render() {
         const { classes, user: {
             authenticated,
-            credentials: { handle, createdAt, imageUrl, website, location, bio } }, 
+            credentials: { handle, createdAt, imageUrl, website, bio } }, 
             loading
         } = this.props
         let profileMarkup = !loading ? (authenticated ? (
@@ -109,56 +117,43 @@ class Profile extends Component {
                         <img src={imageUrl} alt="profile-pic" className="profile-image"/>
                         <input type="file" id="imageInput" name="image" onChange={this.handleImageChange} hidden="hidden"/>
                         <MyButton tip="Edit Profile Picture" onClick={this.handleEditPicture} btnClassName={classes.buttons}>
-                            <EditIcon color="primary"/>
+                          <EditPhotoIcon color="primary"/>
                         </MyButton>
                     </div>
                     <hr/>
                     <div className="profile-details">
                         <MuiLink component={Link} to={`/users/${handle}`} color="primary" variant="h5">
-                            @{handle}
+                          <AccountIcon color="primary" />
+                          {handle}
                         </MuiLink>
                         <hr/>
-                        { bio && <Typography variant="body2">{bio}</Typography>}
+                        { bio && <Typography variant="body2">{bio}</Typography> }
                         <hr/>
-                        { location && (
-                            <React.Fragment>
-                                <LocationOn color="primary" />
-                                <span>{location}</span>
-                                <hr/>
-                            </React.Fragment>
-                        )}
                         { website && (
-                            <React.Fragment>
-                                <LinkIcon color="primary" />
-                                <a href={website} target='_blank' rel="noopener noreferrer">
-                                    {' '}{ website }
-                                </a>
-                                <hr/>
-                            </React.Fragment>
+                          <React.Fragment>
+                              <LinkIcon color="primary" />
+                              <a href={website} target='_blank' rel="noopener noreferrer">
+                                  {' '}{ website }
+                              </a>
+                              <hr/>
+                          </React.Fragment>
                         )}
-                        <CalendarToday color="primary" />
+                        <CalendarIcon color="primary" />
                         {' '}
-                        <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
+                        <span>Joined On {dayjs(createdAt).format('MMM YYYY')}</span>
                     </div>
-                    <MyButton tip="Log Out" onClick={this.handleLogOut} btnClassName={classes.buttons}>
-                        <ExitToApp color="primary"/>
-                    </MyButton>
-                    <EditDetails />
+                    <div className={classes.buttomBtns}>
+                      <MyButton tip="Log Out" onClick={this.handleLogOut} btnClassName={classes.button}>
+                          <ExitToApp color="primary"/>
+                      </MyButton>
+                      <EditDetails />
+                    </div>
                 </div>
             </Paper>
         ) : (
-            <Paper className={classes.paper}>
-                <Typography variant="body2" align="center">
-                    Please Log-In to View
-                </Typography>
-                <div className={classes.buttons}>
-                    <Button variant="contained" color="primary" component={Link} to={'/login'}>LogIn</Button>
-                </div>
-                <div className={classes.buttons}>
-                    <Button variant="contained" color="secondary" component={Link} to={'/signup'}>SignUp</Button>
-                </div>
-            </Paper>
-        )) : (<p>loading</p>)
+            <React.Fragment>
+            </React.Fragment>
+        )) : (<ProfileSkeleton />)
 
         return profileMarkup
     }

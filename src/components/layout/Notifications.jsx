@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import dayjs from 'dayjs'
 import PropTypes from 'prop-types'
 import relativeTime from 'dayjs/plugin/relativeTime'
-
 //MUI
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -11,15 +10,14 @@ import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import Badge from '@material-ui/core/Badge'
-
+import Button from '@material-ui/core/Button'
 //Icons
-import NotificationsIcon from '@material-ui/icons/Notifications'
-import FavoriteIcon from '@material-ui/icons/Favorite'
+import NotificationsIcon from '@material-ui/icons/AddAlert'
+import FavoriteIcon from '@material-ui/icons/ThumbUpAltRounded'
 import ChatIcon from '@material-ui/icons/Chat'
-
 //Redux
 import { connect } from 'react-redux'
-import { markNotificationsRead } from '../../redux/actions/userActions'
+import { markNotificationsRead, deleteNotifications } from '../../redux/actions/userActions'
 
 class Notifications extends Component{
     state = {
@@ -42,6 +40,11 @@ class Notifications extends Component{
         this.props.markNotificationsRead(unReadNotficationsIds)
     }
 
+    onDeleteNotifications = () => {
+        let notificationIds = this.props.notifications.map(notification => notification.notificationId)
+        this.props.deleteNotifications(notificationIds)
+    }
+
     render(){
         const notifications = this.props.notifications
         const anchorEl = this.state.anchorEl
@@ -50,9 +53,9 @@ class Notifications extends Component{
 
         let notificationsIcon
         if(notifications && notifications.length > 0){
-            notifications.filter(not => not.read === false).length > 0
+            notifications.filter(notification => notification.read === false).length > 0
             ? notificationsIcon = (
-                <Badge badgeContent={notifications.filter(not => not.read === false).length} color="secondary">
+                <Badge badgeContent={notifications.filter(notification => notification.read === false).length} color="secondary">
                     <NotificationsIcon color="primary"/>
                 </Badge>
             ) : (
@@ -63,21 +66,21 @@ class Notifications extends Component{
         }
 
         let notificationsMarkup = (notifications && notifications.length > 0) ? (
-            notifications.map(not => {
-                const verb = not.type === 'like' ? 'liked' : 'commented on'
-                const time = dayjs(not.createdAt).fromNow()
-                const iconColor = not.read ? "primary" : "secondary"
-                const icon = not.type === 'like' ? (<FavoriteIcon color={iconColor} style={{ marginRight: 10}} />) : (<ChatIcon color={iconColor} style={{ marginRight: 10}} />)
+            notifications.map(notification => {
+                const verb = notification.type === 'like' ? 'liked' : 'commented on'
+                const time = dayjs(notification.createdAt).fromNow()
+                const iconColor = notification.read ? "primary" : "secondary"
+                const icon = notification.type === 'like' ? (<FavoriteIcon color={iconColor} style={{ marginRight: 10}} />) : (<ChatIcon color={iconColor} style={{ marginRight: 10}} />)
 
                 return ( 
-                    <MenuItem key={not.createdAt} onClick={this.handleClose}>
+                    <MenuItem key={notification.createdAt} onClick={this.handleClose}>
                         {icon}
                         <Typography
                             component={Link}
                             variant="body1"
-                            to={`/users/${not.recipient}/post/${not.postId}`}
+                            to={`/users/${notification.recipient}/post/${notification.postId}`}
                         >
-                            {not.sender} {verb} your post {time}
+                            {notification.sender} {verb} your post {time}
                         </Typography>
                     </MenuItem>
                 )
@@ -96,8 +99,8 @@ class Notifications extends Component{
                     aria-owns={anchorEl ? "simple-menu" : undefined}
                     aria-haspopup="true"
                     onClick={this.handleOpen}>
-                        {notificationsIcon}
-                    </IconButton>
+                    {notificationsIcon}
+                </IconButton>
             </Tooltip>
             <Menu 
                 anchorEl={anchorEl}
@@ -105,6 +108,9 @@ class Notifications extends Component{
                 onClose={this.handleClose}
                 onEntered={this.onMenuOpened}>
                 {notificationsMarkup}
+                <Button style={{backgroundColor:'#ef9a9a', width:'100%'}} disabled={notifications.length < 1} onClick={this.onDeleteNotifications}>
+                    Clear Notifications
+                </Button>
             </Menu>
         </React.Fragment>)
     }
@@ -112,7 +118,8 @@ class Notifications extends Component{
 
 Notifications.propTypes = {
     markNotificationsRead: PropTypes.func.isRequired,
-    notifications: PropTypes.array.isRequired
+    notifications: PropTypes.array.isRequired,
+    deleteNotifications: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -120,7 +127,8 @@ const mapStateToProps = state => ({
 })
 
 const mapActionsToProps = {
-    markNotificationsRead
+    markNotificationsRead,
+    deleteNotifications
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(Notifications)

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import PropTypes from 'prop-types'
+// Components
 import MyButton from '../../util/MyButton'
 import DeletePost from './DeletePost'
 import PostDialog from './PostDialog'
@@ -13,29 +14,40 @@ import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import Typography from '@material-ui/core/Typography'
-
 // Icons
 import ChatIcon from '@material-ui/icons/Chat'
-
 // Redux
 import { connect } from 'react-redux'
 
-const styles = {
+const styles = (theme) => ({
     card: {
         display: 'flex',
-        marginBottom: 20
+        marginBottom: 20,
+        boxShadow: '1px 1px 3px #424242',
+        backgroundColor: '#9e9e9e',
     },
     image: {
-        minWidth: 200,
-        objectFit: 'cover'
+        minWidth: '165px',
+        objectFit: 'cover',
     },
-    content: {
-        padding: 25
+    contentCard: {
+        padding: 10,
+        width: '100%'
     },
     smallSpan: {
-      fontSize: '20px'
+      fontSize: '16px'
+    },
+    postDialog: {
+        paddingTop: '10px',
+        display: 'flex',
+        justifyContent: 'space-between'
+    },
+    contentDiv: {
+        marginLeft: '15px',
+        display: 'flex',
+        justifyContent: 'space-between'
     }
-}
+})
 
 class Post extends Component {
     render() {
@@ -46,19 +58,31 @@ class Post extends Component {
         ) : (<div></div>)
         return (
             <Card className={classes.card}>
-                <CardMedia image={userImage} title="Profile image" className={classes.image}/>
-                <CardContent className={classes.content}>
-                    <Typography variant="h5" component={Link} to={`/users/${userHandle}`} color="primary">{userHandle}</Typography>
-                    {deleteButton}
-                    <Typography variant="body2" color="textSecondary">{dayjs(createdAt).fromNow()}</Typography>
-                    <Typography variant="body1">{body}</Typography>
-                    <LikeButton postId={postId} />
-                    <span className={classes.smallSpan}>{likeCount} Likes</span>
-                    <MyButton tip="comments">
-                        <ChatIcon color="primary" />
-                    </MyButton>
-                    <span className={classes.smallSpan}>{commentCount} Comments</span>
-                    <PostDialog postId={postId} userHandle={userHandle} openDialog={this.props.openDialog} />
+                <CardMedia image={userImage} title="Profile image" className={classes.image} />
+                <CardContent className={classes.contentCard}>
+                    <div className={classes.contentDiv}>
+                        <div>
+                            <Typography variant="h5" component={Link} to={`/users/${userHandle}`} color="primary">
+                                {userHandle}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary">{dayjs(createdAt).fromNow()}</Typography>
+                            <Typography variant="body1">{body}</Typography>
+                        </div>
+                        <div>
+                            {deleteButton}
+                        </div>
+                    </div>
+                    <div className={classes.postDialog}>
+                        <div>
+                            <LikeButton postId={postId} />
+                            <span className={classes.smallSpan}>Likes: |{likeCount}|</span>
+                            <MyButton tip="comments">
+                                <ChatIcon color="primary" />
+                            </MyButton>
+                            <span className={classes.smallSpan}>Comments: |{commentCount}|</span>
+                        </div>
+                        <PostDialog postId={postId} userHandle={userHandle} openDialog={this.props.openDialog} />
+                    </div>
                 </CardContent>
             </Card>
         )

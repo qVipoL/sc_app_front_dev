@@ -2,11 +2,9 @@ import React, { Component } from 'react'
 import MyButton from '../../util/MyButton'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-
 // MUI
-import FavoriteIcon from '@material-ui/icons/Favorite'
-import FavoriteBorder from '@material-ui/icons/FavoriteBorder'
-
+import FavoriteBorder from '@material-ui/icons/ThumbUpAltOutlined'
+import FavoriteIcon from '@material-ui/icons/ThumbUpAltRounded'
 // Redux
 import { connect } from 'react-redux'
 import { likePost, unLikePost } from '../../redux/actions/dataActions'

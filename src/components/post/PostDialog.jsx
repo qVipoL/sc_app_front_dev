@@ -9,22 +9,20 @@ import CommentForm from './CommentForm'
 // Redux
 import { connect } from 'react-redux'
 import { getPost, clearErrors } from '../../redux/actions/dataActions'
-
 //material ui
 import Dialog from '@material-ui/core/Dialog'
 import DialogContent from '@material-ui/core/DialogContent'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import withStyles from '@material-ui/core/styles/withStyles'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
-
+import LinearProgress from '@material-ui/core/LinearProgress'
 //icons
 import ChatIcon from '@material-ui/icons/Chat'
 import CloseIcon from '@material-ui/icons/Close'
-import UnfoldMore from '@material-ui/icons/UnfoldMore'
+import UnfoldMore from '@material-ui/icons/MoreVert'
 
 
-const styles = {
+const styles = theme => ({
     closeButton: {
         position: 'absolute',
         left: '90%',
@@ -55,8 +53,20 @@ const styles = {
         width: '100%',
         borderBottom: '1px solid rgba(0,0,0,0.1)',
         marginBottom: 20
+    },
+    cardBg: {
+        backgroundColor: '#f5f5f5'
+    },
+    postInfo: {
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        justifyContent: 'space-between'
+    },
+    likesAndComments: {
+        display: 'flex'
     }
-}
+})
 
 class PostDialog extends Component{
     state = {
@@ -94,35 +104,47 @@ class PostDialog extends Component{
         const { classes, post: { postId, body, createdAt, likeCount, commentCount, userImage, userHandle, comments }, UI: {loading}} = this.props
         const dialogMarkup = loading ? (
             <div className={classes.spinnerDiv}>
-                <CircularProgress size={200} thickness={2} />
+                <LinearProgress variant="query" />
+                
             </div>
         ) : (
-            <Grid container spacing={10} >
+            <Grid container>
                 <Grid item sm={5}>
                     <img src={userImage} alt="Profile" className={classes.profileImage} />
                 </Grid>
                 <Grid item sm={7}>
-                    <Typography
-                        component={Link}
-                        color="primary"
-                        variant="h5"
-                        to={`/users/${userHandle}`}>
-                            @{userHandle}
-                    </Typography>
-                    <hr className={classes.invisibleSep}/>
-                    <Typography variant="body2" color="textSecondary">
-                        {dayjs(createdAt).format('h:mm a, MMMM DD YYYY')}
-                    </Typography>
-                    <hr className={classes.invisibleSep}/>
-                    <Typography variant="body1">
-                        {body}
-                    </Typography>
-                    <LikeButton postId={postId} />
-                    <span className={classes.smallSpan}>{likeCount} Likes</span>
-                    <MyButton tip="comments">
-                        <ChatIcon color="primary" />
-                    </MyButton>
-                    <span className={classes.smallSpan}>{commentCount} Comments</span>
+                    <div className={classes.postInfo}>
+                        <div>
+                            <Typography
+                                component={Link}
+                                color="primary"
+                                variant="h5"
+                                to={`/users/${userHandle}`}>
+                                    | {userHandle}
+                            </Typography>
+                            <hr className={classes.invisibleSep}/>
+                            <Typography variant="body2" color="textSecondary">
+                                {dayjs(createdAt).format('h:mm a, MMMM DD YYYY')}
+                            </Typography>
+                            <hr className={classes.invisibleSep}/>
+                            <Typography variant="body1">
+                                {body}
+                            </Typography>
+                        </div>
+                        <div className={classes.likesAndComments}>
+                            <div>
+                                <LikeButton postId={postId} />
+                                <span className={classes.smallSpan}>{likeCount} Likes</span>
+                            </div>
+                            <div>
+                                <MyButton tip="comments">
+                                    <ChatIcon color="primary" />
+                                </MyButton>
+
+                                <span className={classes.smallSpan}>{commentCount} Comments</span>
+                            </div>
+                        </div>
+                    </div>
                 </Grid>
                 <hr className={classes.visibleSep}/>
                 <CommentForm postId={postId} />

@@ -1,22 +1,27 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
+// Components
 import Post from '../components/post/Post'
+import Profile from '../components/profile/Profile'
 import StaticProfile from '../components/profile/StaticProfile'
-
-//MUI
+import PostSkeleton from '../util/PostSkeleton'
+import ProfileSkeleton from '../util/ProfileSkeleton'
+// MUI
 import Grid from '@material-ui/core/Grid'
-
-//Redux
+import withStyles from '@material-ui/core/styles/withStyles'
+// Redux
 import { connect } from 'react-redux'
 import { getUserData } from '../redux/actions/dataActions'
 
+const styles = (theme) => ({...theme.spreadIt})
 
 class user extends Component {
     state = {
         profile: null,
         postIdparam: null
     }
+    
     componentDidMount(){
         const handle = this.props.match.params.handle
         const postId = this.props.match.params.postId
@@ -30,13 +35,14 @@ class user extends Component {
             })
             .catch(err => console.log(err))
     }
+
     render() {
         const { posts, loading } = this.props.data
         const { postIdparam } = this.state
-
+        const classes = this.props.classes
         const PostsMarkup = loading ? 
-        (<p>LOADING...</p>) : posts === null ? (
-            <p>No Posts For This User</p>
+        (<PostSkeleton />) : posts === null ? (
+            <p>This User Has No Posts</p>
         ) : !postIdparam ? (
             posts.map(post => <Post key={post.postId} post={post}/>)
         ) : (
@@ -49,14 +55,14 @@ class user extends Component {
         )
 
         return (
-            <Grid container spacing={10}>
-                <Grid item sm={8} sx={12}>
-                    {PostsMarkup}
-                </Grid>
-                <Grid item sm={4} sx={12}>
+            <Grid container spacing={10} className={classes.simpleBg}>
+                <Grid item xs={12} md={4}>
                     {this.state.profile === null ? (
-                        <p>LOADING...</p>
-                    ) : (<StaticProfile profile={this.state.profile} />)}
+                        <ProfileSkeleton />
+                    ) : this.props.userHandle === this.props.match.params.handle ? (<Profile />) : (<StaticProfile profile={this.state.profile} />)}
+                </Grid>
+                <Grid item xs={12} md={8}>
+                    {PostsMarkup}
                 </Grid>
             </Grid>
         )
@@ -65,11 +71,14 @@ class user extends Component {
 
 user.propTypes = {
     getUserData: PropTypes.func.isRequired,
-    data: PropTypes.object.isRequired
+    data: PropTypes.object.isRequired,
+    classes: PropTypes.object.isRequired,
+    userHandle: PropTypes.string
 }
 
 const mapStateToProps = state => ({
-    data: state.data
+    data: state.data,
+    userHandle: state.user.credentials.handle
 })
 
 const mapActionsToProps = {
@@ -77,4 +86,4 @@ const mapActionsToProps = {
 }
 
 
-export default connect(mapStateToProps, mapActionsToProps)(user)
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(user))

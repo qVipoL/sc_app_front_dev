@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { editUserDetails } from '../../redux/actions/userActions'
-import themeObj from '../../util/theme'
 // Redux
 import { connect } from 'react-redux'
-
+import { editUserDetails } from '../../redux/actions/userActions'
 // MUI
 import withStyles from '@material-ui/core/styles/withStyles'
 import Button from '@material-ui/core/Button'
@@ -17,16 +15,14 @@ import MyButton from '../../util/MyButton'
 // Icons
 import EditIcon from '@material-ui/icons/Edit'
 
+const styles = (theme) => ({...theme.spreadIt})
 
-const styles = () => ({...themeObj})
-
-export class EditDetails extends Component {
+class EditDetails extends Component {
     constructor(props){
         super(props)
         this.state = {
             bio: '',
             website: '',
-            location: '',
             open: false
         }     
     }
@@ -47,8 +43,7 @@ export class EditDetails extends Component {
     mapUserDetailsToState = (credentials) => {
         this.setState({
             bio: credentials.bio ? credentials.bio : '',
-            website: credentials.website ? credentials.website : '',
-            location: credentials.location ? credentials.location : '',
+            website: credentials.website ? credentials.website : ''
         })
     }
 
@@ -62,7 +57,7 @@ export class EditDetails extends Component {
         const userDetails = {
             bio: this.state.bio,
             website: this.state.website,
-            location: this.state.location
+            location: ''
         }
         this.props.editUserDetails(userDetails)
         this.setState({open: false})
@@ -75,8 +70,8 @@ export class EditDetails extends Component {
                 <MyButton tip="Edit Details" onClick={this.handleOpen} btnClassName={classes.button}>
                     <EditIcon color="primary" />
                 </MyButton>
-                <Dialog open={this.state.open} onClose={this.handleClose} fullWidthmaxWidth="sm">
-                    <DialogTitle>Edit Details</DialogTitle>
+                <Dialog open={this.state.open} onClose={this.handleClose} fullWidth maxWidth="sm">
+                    <DialogTitle><strong>Edit Details</strong></DialogTitle>
                     <DialogContent>
                         <form>
                             <TextField
@@ -85,7 +80,7 @@ export class EditDetails extends Component {
                             label="Bio"
                             multiline
                             rows="3"
-                            placeholder="A Bio About You"
+                            placeholder="Some Info About You"
                             className={classes.textField}
                             value={this.state.bio}
                             onChange={this.handleChange}
@@ -94,28 +89,19 @@ export class EditDetails extends Component {
                             name="website"
                             type="text"
                             label="WebSite"
-                            placeholder="A Link To You Website"
+                            placeholder="Some Website Link"
                             className={classes.textField}
                             value={this.state.website}
-                            onChange={this.handleChange}
-                            fullWidth />
-                            <TextField
-                            name="location"
-                            type="text"
-                            label="Location"
-                            placeholder="Your Location"
-                            className={classes.textField}
-                            value={this.state.location}
                             onChange={this.handleChange}
                             fullWidth />
                         </form>
                     </DialogContent>
                     <DialogActions>
-                        <Button onClick={this.handleClose} color="secondary">
+                        <Button onClick={this.handleClose} color="primary">
                             Cancel
                         </Button>
                         <Button onClick={this.handleSubmit} color="primary">
-                            Submit
+                            Change
                         </Button>
                     </DialogActions>
                 </Dialog>

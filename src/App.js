@@ -41,7 +41,7 @@ function App() {
       <Provider store={store}>
         <Router>
           <Navbar />
-          <div className="container">
+          <div className="container" style={{height:'100%'}}>
             <Switch>
               <Route exact path='/' component={home} />
               <AuthRoute exact path='/login' component={login} />

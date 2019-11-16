@@ -1,4 +1,4 @@
-import { SET_USER, SET_AUTHENTICATED, SET_UNAUTHENTICATED, LOADING_USER, LIKE_POST, UNLIKE_POST, MARK_NOTIFICATIONS_READ } from '../types'
+import { SET_USER, SET_AUTHENTICATED, SET_UNAUTHENTICATED, LOADING_USER, LIKE_POST, UNLIKE_POST, MARK_NOTIFICATIONS_READ, CLEAR_NOTIFICATIONS } from '../types'
 
 const initialState = {
     authenticated: false,
@@ -56,6 +56,11 @@ export default function(state = initialState, action){
                 ...state
             }
 
+        case CLEAR_NOTIFICATIONS:
+            return{
+                ...state,
+                notifications: []
+            }
 
         default:
             return state
