@@ -13,37 +13,7 @@ import LinkIcon from '@material-ui/icons/Link'
 import CalendarToday from '@material-ui/icons/CalendarToday'
 
 const styles = theme => ({
-    paper: {
-        padding: 20,
-        backgroundColor: '#9e9e9e',
-        boxShadow: '1px 1px 3px #424242'
-      },
-      profile: {
-        '& .image-wrapper': {
-          textAlign: 'center',
-          position: 'relative'
-        },
-        '& .profile-image': {
-          width: 200,
-          height: 200,
-          objectFit: 'cover',
-          maxWidth: '100%',
-          borderRadius: '50%'
-        },
-        '& .profile-details': {
-          textAlign: 'center',
-          '& span, svg': {
-            verticalAlign: 'middle'
-          },
-          '& a': {
-            color: theme.palette.primary.main
-          }
-        },
-        '& hr': {
-          border: 'none',
-          margin: '0 0 10px 0'
-        }
-    }
+    ...theme.spreadIt
 })
 
 

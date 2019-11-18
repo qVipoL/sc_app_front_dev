@@ -56,7 +56,7 @@ class Notifications extends Component{
             notifications.filter(notification => notification.read === false).length > 0
             ? notificationsIcon = (
                 <Badge badgeContent={notifications.filter(notification => notification.read === false).length} color="secondary">
-                    <NotificationsIcon color="primary"/>
+                    <NotificationsIcon/>
                 </Badge>
             ) : (
                 notificationsIcon = <NotificationsIcon color="secondary"/>
@@ -69,7 +69,7 @@ class Notifications extends Component{
             notifications.map(notification => {
                 const verb = notification.type === 'like' ? 'liked' : 'commented on'
                 const time = dayjs(notification.createdAt).fromNow()
-                const iconColor = notification.read ? "primary" : "secondary"
+                const iconColor = notification.read ? "primary" : "primary"
                 const icon = notification.type === 'like' ? (<FavoriteIcon color={iconColor} style={{ marginRight: 10}} />) : (<ChatIcon color={iconColor} style={{ marginRight: 10}} />)
 
                 return ( 

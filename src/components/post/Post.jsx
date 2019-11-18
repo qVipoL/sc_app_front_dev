@@ -24,7 +24,7 @@ const styles = (theme) => ({
         display: 'flex',
         marginBottom: 20,
         boxShadow: '1px 1px 3px #424242',
-        backgroundColor: '#9e9e9e',
+        backgroundColor: '#BAB9B9',
     },
     image: {
         minWidth: '165px',

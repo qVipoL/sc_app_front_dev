@@ -19,7 +19,10 @@ export default function(state = initialState, action){
             let index = state.posts.findIndex((post) => post.postId === action.payload.postId)
             state.posts[index] = action.payload
             if(state.post.postId === action.payload.postId){
-                state.post = action.payload
+                state.post = {
+                    ...action.payload,
+                    comments: state.post.comments
+                }
             }
             return { ...state }
 
@@ -42,7 +45,6 @@ export default function(state = initialState, action){
                 ...state,
                 post: {
                     ...state.post,
-                    commentCount: state.post.commentCount++,
                     comments: [action.payload, ...state.post.comments]
                 }
             }

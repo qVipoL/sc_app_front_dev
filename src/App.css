@@ -18,3 +18,37 @@ body{
 a{
   text-decoration: none;
 }
+
+.MuiPaper-root {
+  border: 2px solid #424242;
+}
+
+
+div[title='Profile image'] {
+  border-right: 2px solid #424242;
+}
+
+img.profile-image {
+  border: 2px solid #424242
+}
+
+div.jss225 > div > div > p.MuiTypography-body1{
+  height: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media only screen and (max-width: 600px){
+  *{
+    font-size: 16px !important;
+  }
+  button[title="Like"], button[title="Un Like"], button[title="comments"]  {
+    padding: 0 !important
+  }
+  div.MuiCardMedia-root {
+    min-width: 90px;
+  }
+  div.Navbar-navbar-1 > button > span > svg, div.Navbar-navbar-1 > a > button > span > svg {
+    font-size: 30px !important;
+  }
+}
